@@ -1,0 +1,77 @@
+💡 Apunte sobre cómo recuperar y corregir un Pull Request tras un git reset --hard accidental
+
+Durante esta clase, subí un Pull Request con archivos que no debía incluir. Mi error fue olvidar usar git rm para eliminarlos correctamente y, en su lugar, intenté arreglarlo con git reset --hard, lo que me hizo perder cambios.
+
+Comparto este apunte con los pasos detallados por si alguien más se encuentra en la misma situación. 🚀
+
+👇 Aquí está el apunte completo:
+
+(Apoyo de AI para resolver el problema)
+
+🔹 Recuperar y corregir un Pull Request tras un git reset --hard accidental
+Escenario:
+Subiste un Pull Request (PR) con archivos que no debías incluir.
+Intentaste arreglarlo, pero hiciste un git reset --hard en local y perdiste tu commit.
+Ahora necesitas recuperar los cambios y borrar los archivos no deseados en el PR.
+1️⃣ Restablecer un git reset --hard accidental
+✅ Ver el historial de cambios con git reflog
+Git mantiene un historial interno de cada movimiento. Para ver los commits antes del reset:
+
+
+git reflog
+Verás una lista como esta:
+
+
+6e219fd HEAD@{1}: commit: Cambios antes del reset
+38367ff HEAD@{0}: reset: moving to origin/main
+El commit que tenías antes del reset es el correcto (en este caso 6e219fd).
+
+✅ Recuperar el commit perdido
+
+git reset --hard <ID_DEL_COMMIT>
+Ejemplo:
+
+
+git reset --hard 6e219fd
+Con esto, habrás restaurado tu código antes del reset.
+
+✅ Sincronizar con GitHub
+Si ya habías subido la versión equivocada, necesitas sobrescribir la rama en GitHub:
+
+
+git push --force
+2️⃣ Eliminar archivos o directorios no deseados en el Pull Request
+
+✅ Eliminar archivos individuales
+
+git rm archivo_no_deseado.txt
+git commit -m "Eliminando archivo innecesario"
+✅ Eliminar un directorio completo
+
+
+git rm -r directorio_no_deseado/
+git commit -m "Eliminando directorio innecesario"
+✅ Si quieres eliminarlo solo de Git pero mantenerlo en local
+
+
+git rm -r --cached directorio_no_deseado/
+git commit -m "Eliminando directorio solo del control de versiones"
+Luego, sube los cambios al Pull Request:
+
+
+git push
+3️⃣ Opcional: Sobrescribir el commit anterior en el PR
+
+Si solo quieres modificar el último commit sin crear uno nuevo:
+
+
+git commit --amend -m "Corrección: eliminando archivos no deseados"
+Y si el PR ya estaba en GitHub, fuerza la actualización:
+
+
+git push --force
+4️⃣ Confirmar que todo está corregido en el PR
+
+Ve a GitHub y revisa que los archivos no deseados han desaparecido del PR.
+Espera la revisión del equipo y listo. 🚀
+Este apunte te servirá como referencia rápida para no perder la calma si vuelve a pasar. 😎
